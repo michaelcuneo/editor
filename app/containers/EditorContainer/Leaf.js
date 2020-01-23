@@ -3,39 +3,23 @@ import PropTypes from 'prop-types';
 
 const Leaf = ({ attributes, children, leaf }) => {
   if (leaf.bold) {
-    return (
-      <span {...attributes}>
-        <strong>{children}</strong>
-      </span>
-    );
+    children = <strong>{children}</strong>
   }
 
   if (leaf.code) {
-    return (
-      <span {...attributes}>
-        <code>{children}</code>
-      </span>
-    );
+    children = <code>{children}</code>
   }
 
   if (leaf.italic) {
-    return (
-      <span {...attributes}>
-        <em>{children}</em>
-      </span>
-    );
+    children = <em>{children}</em>
   }
 
   if (leaf.underline) {
-    return (
-      <span {...attributes}>
-        <u>{children}</u>
-      </span>
-    );
+    children = <u>{children}</u>
   }
 
-  return <span {...attributes}>{children}</span>;
-};
+  return <span {...attributes}>{children}</span>
+}
 
 Leaf.propTypes = {
   attributes: PropTypes.object,

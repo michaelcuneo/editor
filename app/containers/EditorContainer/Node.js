@@ -4,6 +4,8 @@ import { Node, Text } from 'slate';
 
 // Define a serializing function that takes a value and returns a string.
 export const serialize = nodes => {
+  const children = Array.from(nodes).map(deserialize);
+
   nodes.forEach(node => {
     switch (node.type) {
       case 'quote':

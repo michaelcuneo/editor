@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { cx, css } from 'emotion';
+
+/*
 // Find a way to fix the unused expression...
 export const Button = styled('span')`
   cursor: pointer;
@@ -15,6 +18,30 @@ export const Button = styled('span')`
     }
   }};
 `;
+*/
+
+export const Button = React.forwardRef(
+  ({ className, active, reversed, ...props }, ref) => (
+    <span
+      {...props}
+      ref={ref}
+      className={cx(
+        className,
+        css`
+          cursor: pointer;
+          color: ${reversed
+            ? active
+              ? 'white'
+              : '#aaa'
+            : active
+            ? 'black'
+            : '#ccc'};
+        `
+      )}
+    />
+  )
+)
+
 
 export const Icon = styled(({ className, ...rest }) => (
   <span className={`material-icons ${className}`} {...rest} />

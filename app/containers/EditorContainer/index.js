@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Editable, withReact, Slate } from 'slate-react';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
+import isHotkey from 'is-hotkey';
 
 import { Toolbar } from './Components';
 
@@ -12,7 +13,7 @@ import Element from './Element';
 import Leaf from './Leaf';
 
 // Buttons
-import MarkButton from './MarkButton';
+import { MarkButton, toggleMark } from './MarkButton';
 import BlockButton from './BlockButton';
 import { LinkButton, withLinks } from './LinkButton';
 import { ImageButton, withImages } from './ImageButton';
@@ -75,8 +76,8 @@ export function EditorContainer({ mode, initialValues }) {
             format="bulleted-list"
             icon="format_list_bulleted"
           />
-          <LinkButton />
-          <ImageButton />
+          <LinkButton editor={editor} />
+          <ImageButton editor={editor} />
         </Toolbar>
         <Editable
           style={{
@@ -103,10 +104,7 @@ export function EditorContainer({ mode, initialValues }) {
             }
           }}  
         />
-      </Slate>,
-      <div style={{ margin: '0 auto', width: '90vw' }}>
-        {console.log(editor)}
-      </div>
+      </Slate>
     </React.Fragment>
   );
 }

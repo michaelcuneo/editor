@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Editor, Transforms } from 'slate';
-import { useSlate } from 'slate-react';
 
 import { Button, Icon } from './Components';
 
-const LIST_TYPES = ['numbered-list', 'bulleted-list', 'image'];
+const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
 const isBlockActive = (editor, format) => {
   const [match] = Editor.nodes(editor, {
@@ -36,8 +35,7 @@ const toggleBlock = (editor, format) => {
   }
 };
 
-const BlockButton = ({ format, icon }) => {
-  const editor = useSlate();
+const BlockButton = ({ editor, format, icon }) => {  
   return (
     <Button
       active={isBlockActive(editor, format)}
@@ -52,6 +50,7 @@ const BlockButton = ({ format, icon }) => {
 };
 
 BlockButton.propTypes = {
+  editor: PropTypes.object,
   format: PropTypes.string,
   icon: PropTypes.string,
 };

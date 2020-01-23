@@ -15,7 +15,7 @@ isMarkActive.propTypes = {
   editor: PropTypes.node,
 };
 
-const toggleMark = (editor, format) => {
+export const toggleMark = (editor, format) => {
   const isActive = isMarkActive(editor, format);
 
   if (isActive) {
@@ -25,8 +25,7 @@ const toggleMark = (editor, format) => {
   }
 };
 
-const MarkButton = ({ format, icon }) => {
-  const editor = useSlate();
+export const MarkButton = ({ editor, format, icon }) => {
   return (
     <Button
       active={isMarkActive(editor, format)}
@@ -41,6 +40,7 @@ const MarkButton = ({ format, icon }) => {
 };
 
 MarkButton.propTypes = {
+  editor: PropTypes.object,
   format: PropTypes.string,
   icon: PropTypes.string,
 };
