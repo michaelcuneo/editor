@@ -1,0 +1,21 @@
+{
+  "hosting": {
+    "S3AndCloudFront": {
+      "service": "S3AndCloudFront",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "auth": {
+    "editorae5095ca": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
+  },
+  "storage": {
+    "s397bcb208": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  }
+}

@@ -64,10 +64,11 @@ export const ImageButton = () => {
     return src;
   };
 
-  const uploadS3 = file =>
+  const uploadS3 = file => [
     putS3(`${file.name}`, file, file.type)
       .then(result => result)
-      .catch(err => err);
+      .catch(err => err),
+  ];
 
   const insertImage = src => {
     const text = { text: '' };

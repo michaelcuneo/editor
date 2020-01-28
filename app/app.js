@@ -27,10 +27,16 @@ import LanguageProvider from 'containers/LanguageProvider';
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
 
+import API from '@aws-amplify/api';
 import configureStore from './configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
+
+import awsconfig from './aws-exports';
+API.configure(awsconfig);
+
+window.LOG_LEVEL = 'DEBUG';
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)

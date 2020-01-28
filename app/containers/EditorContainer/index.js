@@ -19,7 +19,10 @@ import { LinkButton, withLinks } from './LinkButton';
 import { ImageButton, withImages } from './ImageButton';
 
 export function EditorContainer({ mode, initialValues }) {
-  const intialDocumentDeserialized = new DOMParser().parseFromString(initialValues, 'text/html');
+  const intialDocumentDeserialized = new DOMParser().parseFromString(
+    initialValues,
+    'text/html',
+  );
   const [value, setValue] = useState(
     initialValues
       ? deserialize(intialDocumentDeserialized.body)
@@ -41,7 +44,7 @@ export function EditorContainer({ mode, initialValues }) {
     'mod+i': 'italic',
     'mod+u': 'underline',
     'mod+`': 'code',
-  }  
+  };
 
   return (
     <React.Fragment>
@@ -65,7 +68,11 @@ export function EditorContainer({ mode, initialValues }) {
           <MarkButton editor={editor} format="code" icon="code" />
           <BlockButton editor={editor} format="heading-one" icon="looks_one" />
           <BlockButton editor={editor} format="heading-two" icon="looks_two" />
-          <BlockButton editor={editor} format="block-quote" icon="format_quote" />
+          <BlockButton
+            editor={editor}
+            format="block-quote"
+            icon="format_quote"
+          />
           <BlockButton
             editor={editor}
             format="numbered-list"
@@ -95,14 +102,14 @@ export function EditorContainer({ mode, initialValues }) {
           spellCheck
           autoFocus
           onKeyDown={event => {
-            for (const hotkey in HOTKEYS) {
-              if (isHotkey(hotkey, event)) {
-                event.preventDefault()
-                const mark = HOTKEYS[hotkey]
-                toggleMark(editor, mark)
+            Object.keys(HOTKEYS).forEach(key => {
+              if (isHotkey(key, event)) {
+                event.preventDefault();
+                const mark = HOTKEYS[key];
+                toggleMark(editor, mark);
               }
-            }
-          }}  
+            });
+          }}
         />
       </Slate>
     </React.Fragment>
