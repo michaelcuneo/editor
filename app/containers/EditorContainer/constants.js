@@ -1,1 +1,2 @@
-export const CHANGE_VALUE = 'boilerplate/EditorContainer/CHANGE_VALUE';
+export const CHANGE_SERIALIZED_VALUE =
+  'boilerplate/EditorContainer/CHANGE_SERIALIZED_VALUE';

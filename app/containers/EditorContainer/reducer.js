@@ -1,19 +1,19 @@
 import produce from 'immer';
-import { CHANGE_VALUE } from './constants';
+import { CHANGE_SERIALIZED_VALUE } from './constants';
 
 // The initial state of the App
 export const initialState = {
-  value: '',
+  serializedValue: '',
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const EditorContainerReducer = (state = initialState, action) =>
+const EditorReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case CHANGE_VALUE:
-        draft.value = action.value;
+      case CHANGE_SERIALIZED_VALUE:
+        draft.serializedValue = action.serializedValue;
         break;
     }
   });
 
-export default EditorContainerReducer;
+export default EditorReducer;

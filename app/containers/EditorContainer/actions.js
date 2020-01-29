@@ -1,8 +1,8 @@
-import CHANGE_VALUE from './constants';
+import { CHANGE_SERIALIZED_VALUE } from './constants';
 
-export function changeEdit(value) {
+export function changeSerializedValue(serializedValue) {
   return {
-    type: CHANGE_VALUE,
-    value,
+    type: CHANGE_SERIALIZED_VALUE,
+    serializedValue,
   };
 }

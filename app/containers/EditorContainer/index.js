@@ -1,5 +1,10 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useMemo, memo, useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+
+import useInjectReducer from 'utils/injectReducer';
+
 import { Editable, withReact, Slate } from 'slate-react';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
@@ -8,7 +13,7 @@ import isHotkey from 'is-hotkey';
 import { Toolbar } from './Components';
 
 // Nodes
-import { deserialize, serialize } from './Node';
+import { serialize, deserialize } from './Node';
 import Element from './Element';
 import Leaf from './Leaf';
 
@@ -18,11 +23,22 @@ import BlockButton from './BlockButton';
 import { LinkButton, withLinks } from './LinkButton';
 import { ImageButton, withImages } from './ImageButton';
 
-export function EditorContainer({ mode, initialValues }) {
+import reducer from './reducer';
+
+import { changeSerializedValue } from './actions';
+
+const reducerKey = 'EditorContainer';
+
+const EditorContainer = ({ initialValues, onChangeSerializedValue }) => {
+  // Init the Reducer
+  useInjectReducer({ reducerKey, reducer });
+
+  // Get the initial document deserialized string from intialValues
   const intialDocumentDeserialized = new DOMParser().parseFromString(
     initialValues,
     'text/html',
   );
+
   const [value, setValue] = useState(
     initialValues
       ? deserialize(intialDocumentDeserialized.body)
@@ -36,9 +52,6 @@ export function EditorContainer({ mode, initialValues }) {
     [],
   );
 
-  const color = mode ? '#000' : '#fff';
-  const borderColour = mode ? '#ec184a' : '#fff';
-
   const HOTKEYS = {
     'mod+b': 'bold',
     'mod+i': 'italic',
@@ -51,13 +64,13 @@ export function EditorContainer({ mode, initialValues }) {
       <Slate
         editor={editor}
         value={value}
-        // eslint-disable-next-line no-shadow
-        onChange={value => {
-          setValue(value);
-          localStorage.setItem('content', serialize(value));
+        onChange={newValue => {
+          setValue(newValue);
+          onChangeSerializedValue(serialize(newValue));
+          localStorage.setItem('content', serialize(newValue));
         }}
       >
-        <Toolbar mode={mode}>
+        <Toolbar>
           <MarkButton editor={editor} format="bold" icon="format_bold" />
           <MarkButton editor={editor} format="italic" icon="format_italic" />
           <MarkButton
@@ -89,10 +102,10 @@ export function EditorContainer({ mode, initialValues }) {
         <Editable
           style={{
             padding: '1em',
-            color,
-            borderLeft: `2px solid ${borderColour}`,
-            borderBottom: `2px solid ${borderColour}`,
-            borderRight: `2px solid ${borderColour}`,
+            colour: 'white',
+            borderLeft: `2px solid white`,
+            borderBottom: `2px solid white`,
+            borderRight: `2px solid white`,
             borderBottomLeftRadius: '10px',
             borderBottomRightRadius: '10px',
           }}
@@ -114,11 +127,27 @@ export function EditorContainer({ mode, initialValues }) {
       </Slate>
     </React.Fragment>
   );
-}
+};
 
 EditorContainer.propTypes = {
   initialValues: PropTypes.string,
-  mode: PropTypes.bool,
+  onChangeSerializedValue: PropTypes.func,
 };
 
-export default EditorContainer;
+export function mapDispatchToProps(dispatch) {
+  return {
+    onChangeSerializedValue: evt => {
+      dispatch(changeSerializedValue(evt));
+    },
+  };
+}
+
+const withConnect = connect(
+  null,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(EditorContainer);

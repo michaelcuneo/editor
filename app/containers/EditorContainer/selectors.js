@@ -8,10 +8,10 @@ import { initialState } from './reducer';
 const selectEditorContainerState = state =>
   state.EditorContainer || initialState;
 
-const makeSelectValue = () =>
+const makeSelectSerializedValue = () =>
   createSelector(
     selectEditorContainerState,
-    editorContainerState => editorContainerState.value,
+    editorContainerState => editorContainerState.serializedValue,
   );
 
-export { selectEditorContainerState, makeSelectValue };
+export { selectEditorContainerState, makeSelectSerializedValue };
