@@ -35,19 +35,17 @@ const toggleBlock = (editor, format) => {
   }
 };
 
-const BlockButton = ({ editor, format, icon }) => {  
-  return (
-    <Button
-      active={isBlockActive(editor, format)}
-      onMouseDown={event => {
-        event.preventDefault();
-        toggleBlock(editor, format);
-      }}
-    >
-      <Icon>{icon}</Icon>
-    </Button>
-  );
-};
+const BlockButton = ({ editor, format, icon }) => (
+  <Button
+    active={isBlockActive(editor, format)}
+    onMouseDown={event => {
+      event.preventDefault();
+      toggleBlock(editor, format);
+    }}
+  >
+    <Icon>{icon}</Icon>
+  </Button>
+);
 
 BlockButton.propTypes = {
   editor: PropTypes.object,

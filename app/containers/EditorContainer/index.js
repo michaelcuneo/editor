@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import useInjectReducer from 'utils/injectReducer';
-
 import { Editable, withReact, Slate } from 'slate-react';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
 import isHotkey from 'is-hotkey';
 
+import { changeValue } from 'containers/App/actions';
 import { Toolbar } from './Components';
 
 // Nodes
@@ -23,16 +22,7 @@ import BlockButton from './BlockButton';
 import { LinkButton, withLinks } from './LinkButton';
 import { ImageButton, withImages } from './ImageButton';
 
-import reducer from './reducer';
-
-import { changeSerializedValue } from './actions';
-
-const reducerKey = 'EditorContainer';
-
-const EditorContainer = ({ initialValues, onChangeSerializedValue }) => {
-  // Init the Reducer
-  useInjectReducer({ reducerKey, reducer });
-
+const EditorContainer = ({ initialValues, onChangeValue }) => {
   // Get the initial document deserialized string from intialValues
   const intialDocumentDeserialized = new DOMParser().parseFromString(
     initialValues,
@@ -66,7 +56,7 @@ const EditorContainer = ({ initialValues, onChangeSerializedValue }) => {
         value={value}
         onChange={newValue => {
           setValue(newValue);
-          onChangeSerializedValue(serialize(newValue));
+          onChangeValue(serialize(newValue));
           localStorage.setItem('content', serialize(newValue));
         }}
       >
@@ -101,7 +91,7 @@ const EditorContainer = ({ initialValues, onChangeSerializedValue }) => {
         </Toolbar>
         <Editable
           style={{
-            padding: '1em',
+            padding: '0.5em 0.5em 0.5em 1em',
             colour: 'white',
             borderLeft: `2px solid white`,
             borderBottom: `2px solid white`,
@@ -131,13 +121,13 @@ const EditorContainer = ({ initialValues, onChangeSerializedValue }) => {
 
 EditorContainer.propTypes = {
   initialValues: PropTypes.string,
-  onChangeSerializedValue: PropTypes.func,
+  onChangeValue: PropTypes.func,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeSerializedValue: evt => {
-      dispatch(changeSerializedValue(evt));
+    onChangeValue: evt => {
+      dispatch(changeValue(evt));
     },
   };
 }

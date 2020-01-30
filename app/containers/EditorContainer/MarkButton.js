@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Editor } from 'slate';
-import { useSlate } from 'slate-react';
 
 import { Button, Icon } from './Components';
 
@@ -25,19 +24,17 @@ export const toggleMark = (editor, format) => {
   }
 };
 
-export const MarkButton = ({ editor, format, icon }) => {
-  return (
-    <Button
-      active={isMarkActive(editor, format)}
-      onMouseDown={event => {
-        event.preventDefault();
-        toggleMark(editor, format);
-      }}
-    >
-      <Icon>{icon}</Icon>
-    </Button>
-  );
-};
+export const MarkButton = ({ editor, format, icon }) => (
+  <Button
+    active={isMarkActive(editor, format)}
+    onMouseDown={event => {
+      event.preventDefault();
+      toggleMark(editor, format);
+    }}
+  >
+    <Icon>{icon}</Icon>
+  </Button>
+);
 
 MarkButton.propTypes = {
   editor: PropTypes.object,

@@ -15,9 +15,9 @@ import { createStructuredSelector } from 'reselect';
 import EditorContainer from 'containers/EditorContainer';
 
 import { Box, Text } from 'rebass';
-import { makeSelectSerializedValue } from 'containers/EditorContainer/selectors';
+import { makeSelectValue } from 'containers/App/selectors';
 
-function HomePage({ serializedValue }) {
+function HomePage({ value }) {
   return (
     <React.Fragment>
       <Helmet>
@@ -39,17 +39,17 @@ function HomePage({ serializedValue }) {
       <Box p={3}>
         <EditorContainer initialValues="<p>Test Data</p>" />
       </Box>
-      <Box p={3}>{serializedValue}</Box>
+      <Box p={3}>{value}</Box>
     </React.Fragment>
   );
 }
 
 HomePage.propTypes = {
-  serializedValue: PropTypes.string,
+  value: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
-  serializedValue: makeSelectSerializedValue(),
+  value: makeSelectValue(),
 });
 
 const withConnect = connect(
