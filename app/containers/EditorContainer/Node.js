@@ -4,10 +4,6 @@ import { jsx } from 'slate-hyperscript';
 
 const ELEMENT_TAGS = {
   P: () => ({ type: 'paragraph' }),
-  BOLD: () => ({ type: 'bold' }),
-  ITALIC: () => ({ type: 'italic' }),
-  UNDERLINE: () => ({ type: 'underline' }),
-  CODE: () => ({ type: 'code' }),
   H1: () => ({ type: 'heading-one' }),
   H2: () => ({ type: 'heading-two' }),
   BLOCKQUOTE: () => ({ type: 'quote' }),
@@ -18,40 +14,53 @@ const ELEMENT_TAGS = {
   IMG: el => ({ type: 'image', url: el.getAttribute('src') }),
 };
 
-const getNode = node => {
-  switch (node.type) {
-    case 'bold':
-      return `<p><strong>${node.children[0].text}</strong><p>`;
-    case 'italic':
-      return `<p><i>${node.children[0].text}</i></p>`;
-    case 'underline':
-      return `<p><u>${node.children[0].text}</u></p>`;
-    case 'code':
-      return `<p><code>${node.children[0].text}</code></p>`;
+const TEXT_TAGS = {
+  CODE: () => ({ code: true }),
+  DEL: () => ({ strikethrough: true }),
+  EM: () => ({ italic: true }),
+  I: () => ({ italic: true }),
+  S: () => ({ strikethrough: true }),
+  STRONG: () => ({ bold: true }),
+  U: () => ({ underline: true }),
+};
+
+const getNode = ({ element, children }) => {
+  switch (element.type) {
     case 'block-quote':
-      return `<blockquote>${node.children[0].text}</blockquote>`;
+      return `<blockquote>${children}</blockquote>`;
     case 'paragraph':
-      return `<p>${node.children[0].text}</p>`;
+      return `<p>${children}</p>`;
     case 'link':
-      return `<a href="${escapeHtml(node.children[0].url)}">${
-        node.children[0].text
-      }</a>`;
+      return `<a href="${escapeHtml(children.url)}">${children}</a>`;
     case 'heading-one':
-      return `<h1>${node.children[0].text}</h1>`;
+      return `<h1>${children}</h1>`;
     case 'heading-two':
-      return `<h2>${node.children[0].text}</h2>`;
+      return `<h2>${children}</h2>`;
     case 'numbered-list':
-      return `<ol>${node.children.map(
-        child => `<li>${child.children[0].text}</li>`,
-      )}</ol>`;
+      return `<ol>${children.map(child => `<li>${child}</li>`)}</ol>`;
     case 'bulleted-list':
-      return `<ul>${node.children[0]}</ul>`;
+      return `<ul>${children}</ul>`;
     case 'list-item':
-      return `<li>${node.children[0].text}</li>`;
+      return `<li>${children}</li>`;
     case 'pre':
-      return `<pre>${node.children[0].text}</pre>`;
+      return `<pre>${children}</pre>`;
     default:
-      return node.children[0].text;
+      return children;
+  }
+};
+
+const getLeaf = ({ leaf, children }) => {
+  switch (leaf) {
+    case 'bold':
+      return `<strong>${children}</strong>`;
+    case 'italic':
+      return `<i>${children}</i>`;
+    case 'underline':
+      return `<u>${children}</u>`;
+    case 'code':
+      return `<code>${children}</code>`;
+    default:
+      return children;
   }
 };
 
@@ -61,8 +70,14 @@ export const serialize = nodes => {
     return escapeHtml(nodes.text);
   }
 
-  const children = nodes.map(node => getNode(node));
-  return children;
+  return nodes
+    .map(node => {
+      if (Text.isText(node)) {
+        return getLeaf({ leaf: node, children: node.text });
+      }
+      return getNode({ element: node, children: serialize(node.children) });
+    })
+    .join('');
 };
 
 // Define a deserializing function that takes a string and returns a value.
@@ -70,11 +85,9 @@ export const deserialize = el => {
   if (el.nodeType === 3) {
     return el.textContent;
   }
-
   if (el.nodeType !== 1) {
     return null;
   }
-
   if (el.nodeName === 'BR') {
     return '\n';
   }
@@ -101,6 +114,11 @@ export const deserialize = el => {
   if (ELEMENT_TAGS[nodeName]) {
     const attrs = ELEMENT_TAGS[nodeName](el);
     return jsx('element', attrs, children);
+  }
+
+  if (TEXT_TAGS[nodeName]) {
+    const attrs = TEXT_TAGS[nodeName](el);
+    return children.map(child => jsx('text', attrs, child));
   }
 
   return children;

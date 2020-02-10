@@ -7,30 +7,6 @@ const Element = props => {
   const { attributes, children, element } = props;
 
   switch (element.type) {
-    case 'bold':
-      return (
-        <p>
-          <strong {...attributes}>{children}</strong>
-        </p>
-      );
-    case 'italic':
-      return (
-        <p>
-          <i {...attributes}>{children}</i>
-        </p>
-      );
-    case 'underline':
-      return (
-        <p>
-          <u {...attributes}>{children}</u>
-        </p>
-      );
-    case 'code':
-      return (
-        <p>
-          <code {...attributes}>{children}</code>
-        </p>
-      );
     case 'heading-one':
       return <h1 {...attributes}>{children}</h1>;
     case 'heading-two':

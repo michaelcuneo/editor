@@ -14,9 +14,11 @@ import { Toolbar } from './Components';
 // Nodes
 import { serialize, deserialize } from './Node';
 import Element from './Element';
+import Leaf from './Leaf';
 
 // Buttons
-import { BlockButton, toggleBlock } from './BlockButton';
+import { MarkButton, toggleMark } from './MarkButton';
+import { BlockButton } from './BlockButton';
 import { LinkButton, withLinks } from './LinkButton';
 import { ImageButton, withImages } from './ImageButton';
 
@@ -34,6 +36,7 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
   );
 
   const renderElement = useCallback(props => <Element {...props} />, []);
+  const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(
     () => withImages(withLinks(withHistory(withReact(createEditor())))),
     [],
@@ -58,14 +61,14 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
         }}
       >
         <Toolbar>
-          <BlockButton editor={editor} format="bold" icon="format_bold" />
-          <BlockButton editor={editor} format="italic" icon="format_italic" />
-          <BlockButton
+          <MarkButton editor={editor} format="bold" icon="format_bold" />
+          <MarkButton editor={editor} format="italic" icon="format_italic" />
+          <MarkButton
             editor={editor}
             format="underline"
             icon="format_underlined"
           />
-          <BlockButton editor={editor} format="code" icon="code" />
+          <MarkButton editor={editor} format="code" icon="code" />
           <BlockButton editor={editor} format="heading-one" icon="looks_one" />
           <BlockButton editor={editor} format="heading-two" icon="looks_two" />
           <BlockButton
@@ -98,6 +101,7 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
             userSelect: 'none',
           }}
           renderElement={renderElement}
+          renderLeaf={renderLeaf}
           placeholder=""
           spellCheck
           autoFocus
@@ -106,7 +110,7 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
               if (isHotkey(key, event)) {
                 event.preventDefault();
                 const block = HOTKEYS[key];
-                toggleBlock(editor, block);
+                toggleMark(editor, block);
               }
             });
           }}
