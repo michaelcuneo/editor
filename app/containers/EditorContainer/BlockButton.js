@@ -15,7 +15,7 @@ const isBlockActive = (editor, format) => {
   return !!match;
 };
 
-const toggleBlock = (editor, format) => {
+export const toggleBlock = (editor, format) => {
   const isActive = isBlockActive(editor, format);
   const isList = LIST_TYPES.includes(format);
 
@@ -35,7 +35,7 @@ const toggleBlock = (editor, format) => {
   }
 };
 
-const BlockButton = ({ editor, format, icon }) => (
+export const BlockButton = ({ editor, format, icon }) => (
   <Button
     active={isBlockActive(editor, format)}
     onMouseDown={event => {
@@ -52,5 +52,3 @@ BlockButton.propTypes = {
   format: PropTypes.string,
   icon: PropTypes.string,
 };
-
-export default BlockButton;

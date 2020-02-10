@@ -12,18 +12,23 @@ import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
+// import Footer from 'components/Footer';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
 
 const AppWrapper = styled.div`
+  position: relative;
   max-width: 100vw;
   min-height: 100vh;
   height: 100vh;
-  background: gray;
+  background: #fbfbf8;
   display: flex;
-  padding: 0 0;
   flex-direction: column;
+`;
+
+const Content = styled.div`
+  padding-bottom: 3em;
 `;
 
 export default function App() {
@@ -35,10 +40,13 @@ export default function App() {
       >
         <meta name="description" content="A React.js Boilerplate application" />
       </Helmet>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="" component={NotFoundPage} />
-      </Switch>
+      <Content>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="" component={NotFoundPage} />
+        </Switch>
+      </Content>
+      {/* <Footer /> */}
       <GlobalStyle />
     </AppWrapper>
   );

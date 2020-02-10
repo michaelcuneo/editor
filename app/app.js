@@ -27,7 +27,7 @@ import LanguageProvider from 'containers/LanguageProvider';
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
 
-import API from '@aws-amplify/api';
+import Amplify from 'aws-amplify';
 import configureStore from './configureStore';
 
 // Import i18n messages
@@ -38,7 +38,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
 import awsconfig from './aws-exports';
-API.configure(awsconfig);
+Amplify.configure(awsconfig);
 
 window.LOG_LEVEL = 'DEBUG';
 

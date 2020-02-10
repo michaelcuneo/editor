@@ -148,13 +148,13 @@ export async function putS3(filename, file, type) {
     .catch(error => error);
 }
 
-export function getS3(name, access) {
+export async function getS3(name, access) {
   return Storage.get(name, access)
     .then(response => response)
     .catch(error => error);
 }
 
-export function removeS3(name) {
+export async function removeS3(name) {
   return Storage.remove(name)
     .then(response => response)
     .catch(error => error);

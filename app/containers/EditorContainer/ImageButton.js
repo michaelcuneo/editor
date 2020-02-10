@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useEditor } from 'slate-react';
 import { Transforms } from 'slate';
 
 import { css } from 'emotion';
@@ -25,7 +24,8 @@ export const withImages = editor => {
   return editor;
 };
 
-export const ImageElement = ({ attributes, children, element }) => (
+export const ImageElement = ({ attributes, children, element }) => [
+  // console.log(element),
   <div {...attributes}>
     <div contentEditable={false}>
       <S3Image
@@ -41,8 +41,8 @@ export const ImageElement = ({ attributes, children, element }) => (
       />
     </div>
     {children}
-  </div>
-);
+  </div>,
+];
 
 ImageElement.propTypes = {
   attributes: PropTypes.object,
@@ -50,8 +50,7 @@ ImageElement.propTypes = {
   element: PropTypes.object,
 };
 
-export const ImageButton = () => {
-  const editor = useEditor();
+export const ImageButton = editor => {
   const inputOpenFileRef = React.createRef();
 
   const showOpenFileDlg = () => {

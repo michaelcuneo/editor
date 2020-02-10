@@ -14,11 +14,9 @@ import { Toolbar } from './Components';
 // Nodes
 import { serialize, deserialize } from './Node';
 import Element from './Element';
-import Leaf from './Leaf';
 
 // Buttons
-import { MarkButton, toggleMark } from './MarkButton';
-import BlockButton from './BlockButton';
+import { BlockButton, toggleBlock } from './BlockButton';
 import { LinkButton, withLinks } from './LinkButton';
 import { ImageButton, withImages } from './ImageButton';
 
@@ -36,7 +34,6 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
   );
 
   const renderElement = useCallback(props => <Element {...props} />, []);
-  const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(
     () => withImages(withLinks(withHistory(withReact(createEditor())))),
     [],
@@ -61,14 +58,14 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
         }}
       >
         <Toolbar>
-          <MarkButton editor={editor} format="bold" icon="format_bold" />
-          <MarkButton editor={editor} format="italic" icon="format_italic" />
-          <MarkButton
+          <BlockButton editor={editor} format="bold" icon="format_bold" />
+          <BlockButton editor={editor} format="italic" icon="format_italic" />
+          <BlockButton
             editor={editor}
             format="underline"
             icon="format_underlined"
           />
-          <MarkButton editor={editor} format="code" icon="code" />
+          <BlockButton editor={editor} format="code" icon="code" />
           <BlockButton editor={editor} format="heading-one" icon="looks_one" />
           <BlockButton editor={editor} format="heading-two" icon="looks_two" />
           <BlockButton
@@ -92,15 +89,15 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
         <Editable
           style={{
             padding: '0.5em 0.5em 0.5em 1em',
-            colour: 'white',
-            borderLeft: `2px solid white`,
-            borderBottom: `2px solid white`,
-            borderRight: `2px solid white`,
+            color: '#464646',
+            borderLeft: `2px solid #464646`,
+            borderBottom: `2px solid #464646`,
+            borderRight: `2px solid #464646`,
             borderBottomLeftRadius: '10px',
             borderBottomRightRadius: '10px',
+            userSelect: 'none',
           }}
           renderElement={renderElement}
-          renderLeaf={renderLeaf}
           placeholder=""
           spellCheck
           autoFocus
@@ -108,8 +105,8 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
             Object.keys(HOTKEYS).forEach(key => {
               if (isHotkey(key, event)) {
                 event.preventDefault();
-                const mark = HOTKEYS[key];
-                toggleMark(editor, mark);
+                const block = HOTKEYS[key];
+                toggleBlock(editor, block);
               }
             });
           }}

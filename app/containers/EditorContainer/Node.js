@@ -3,43 +3,53 @@ import { Text } from 'slate';
 import { jsx } from 'slate-hyperscript';
 
 const ELEMENT_TAGS = {
-  A: el => ({ type: 'link', url: el.getAttribute('href') }),
-  BLOCKQUOTE: () => ({ type: 'quote' }),
+  P: () => ({ type: 'paragraph' }),
+  BOLD: () => ({ type: 'bold' }),
+  ITALIC: () => ({ type: 'italic' }),
+  UNDERLINE: () => ({ type: 'underline' }),
+  CODE: () => ({ type: 'code' }),
   H1: () => ({ type: 'heading-one' }),
   H2: () => ({ type: 'heading-two' }),
-  H3: () => ({ type: 'heading-three' }),
-  H4: () => ({ type: 'heading-four' }),
-  H5: () => ({ type: 'heading-five' }),
-  H6: () => ({ type: 'heading-six' }),
-  IMG: el => ({ type: 'image', url: el.getAttribute('src') }),
+  BLOCKQUOTE: () => ({ type: 'quote' }),
   LI: () => ({ type: 'list-item' }),
   OL: () => ({ type: 'numbered-list' }),
-  P: () => ({ type: 'paragraph' }),
-  PRE: () => ({ type: 'code' }),
   UL: () => ({ type: 'bulleted-list' }),
-};
-
-// COMPAT: `B` is omitted here because Google Docs uses `<b>` in weird ways.
-const TEXT_TAGS = {
-  CODE: () => ({ code: true }),
-  DEL: () => ({ strikethrough: true }),
-  EM: () => ({ italic: true }),
-  I: () => ({ italic: true }),
-  S: () => ({ strikethrough: true }),
-  STRONG: () => ({ bold: true }),
-  U: () => ({ underline: true }),
+  LINK: el => ({ type: 'link', url: el.getAttribute('href') }),
+  IMG: el => ({ type: 'image', url: el.getAttribute('src') }),
 };
 
 const getNode = node => {
   switch (node.type) {
-    case 'quote':
-      return `<blockquote><p>${node.children[0].text}</p></blockquote>`;
+    case 'bold':
+      return `<p><strong>${node.children[0].text}</strong><p>`;
+    case 'italic':
+      return `<p><i>${node.children[0].text}</i></p>`;
+    case 'underline':
+      return `<p><u>${node.children[0].text}</u></p>`;
+    case 'code':
+      return `<p><code>${node.children[0].text}</code></p>`;
+    case 'block-quote':
+      return `<blockquote>${node.children[0].text}</blockquote>`;
     case 'paragraph':
       return `<p>${node.children[0].text}</p>`;
     case 'link':
       return `<a href="${escapeHtml(node.children[0].url)}">${
         node.children[0].text
       }</a>`;
+    case 'heading-one':
+      return `<h1>${node.children[0].text}</h1>`;
+    case 'heading-two':
+      return `<h2>${node.children[0].text}</h2>`;
+    case 'numbered-list':
+      return `<ol>${node.children.map(
+        child => `<li>${child.children[0].text}</li>`,
+      )}</ol>`;
+    case 'bulleted-list':
+      return `<ul>${node.children[0]}</ul>`;
+    case 'list-item':
+      return `<li>${node.children[0].text}</li>`;
+    case 'pre':
+      return `<pre>${node.children[0].text}</pre>`;
     default:
       return node.children[0].text;
   }
@@ -91,11 +101,6 @@ export const deserialize = el => {
   if (ELEMENT_TAGS[nodeName]) {
     const attrs = ELEMENT_TAGS[nodeName](el);
     return jsx('element', attrs, children);
-  }
-
-  if (TEXT_TAGS[nodeName]) {
-    const attrs = TEXT_TAGS[nodeName](el);
-    return children.map(child => jsx('text', attrs, child));
   }
 
   return children;
