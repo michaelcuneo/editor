@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import escapeHtml from 'escape-html';
 import { Text } from 'slate';
 import { jsx } from 'slate-hyperscript';
@@ -31,13 +32,13 @@ const getNode = ({ element, children }) => {
     case 'paragraph':
       return `<p>${children}</p>`;
     case 'link':
-      return `<a href="${escapeHtml(children.url)}">${children}</a>`;
+      return `<a href="${escapeHtml(element.url)}">${children}</a>`;
     case 'heading-one':
       return `<h1>${children}</h1>`;
     case 'heading-two':
       return `<h2>${children}</h2>`;
     case 'numbered-list':
-      return `<ol>${children.map(child => `<li>${child}</li>`)}</ol>`;
+      return `<ol>${children}</ol>`;
     case 'bulleted-list':
       return `<ul>${children}</ul>`;
     case 'list-item':
@@ -50,27 +51,25 @@ const getNode = ({ element, children }) => {
 };
 
 const getLeaf = ({ leaf, children }) => {
-  switch (leaf) {
-    case 'bold':
-      return `<strong>${children}</strong>`;
-    case 'italic':
-      return `<i>${children}</i>`;
-    case 'underline':
-      return `<u>${children}</u>`;
-    case 'code':
-      return `<code>${children}</code>`;
-    default:
-      return children;
+  if (leaf.bold) {
+    children = `<strong>${children}</strong>`;
   }
+  if (leaf.italic) {
+    children = `<i>${children}</i>`;
+  }
+  if (leaf.underline) {
+    children = `<u>${children}</u>`;
+  }
+  if (leaf.code) {
+    children = `<code>${children}</code>`;
+  }
+
+  return children;
 };
 
 // Define a serializing function that takes a value and returns a string.
-export const serialize = nodes => {
-  if (Text.isText(nodes)) {
-    return escapeHtml(nodes.text);
-  }
-
-  return nodes
+export const serialize = nodes =>
+  nodes
     .map(node => {
       if (Text.isText(node)) {
         return getLeaf({ leaf: node, children: node.text });
@@ -78,7 +77,6 @@ export const serialize = nodes => {
       return getNode({ element: node, children: serialize(node.children) });
     })
     .join('');
-};
 
 // Define a deserializing function that takes a string and returns a value.
 export const deserialize = el => {

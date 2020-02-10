@@ -12,7 +12,7 @@ import { CHANGE_VALUE } from './constants';
 
 // The initial state of the App
 export const initialState = {
-  value: [],
+  value: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */

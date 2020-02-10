@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-// import ParsedContent from 'components/ParsedContent';
+import ParsedContent from 'components/ParsedContent';
 
 import EditorContainer from 'containers/EditorContainer';
 
@@ -63,7 +63,7 @@ function HomePage({ value }) {
               theme the editor HTML result to any project.
             </p>
           </Box>
-          <Box p={2}>{/* <ParsedContent content={value} /> */}</Box>
+          <Box p={2}>{value && <ParsedContent content={value} />}</Box>
         </Box>
         <Box
           style={{ border: '2px solid #c0c0c0', borderRadius: '10px' }}
@@ -72,7 +72,7 @@ function HomePage({ value }) {
           <Box p={2}>
             <h3>Post Content Loaded from AWS</h3>
           </Box>
-          <Box p={2}>{/* <ParsedContent content={value} /> */}</Box>
+          <Box p={2}>{value && <ParsedContent content={value} />}</Box>
         </Box>
       </Box>
     </React.Fragment>
