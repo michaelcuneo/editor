@@ -7,7 +7,7 @@ import Popover from 'react-popover';
 import { ListBox } from 'primereact/listbox';
 import { Button, Icon } from './Components';
 
-import { users } from './users';
+import { users } from './Users';
 
 export const withMentions = editor => {
   const { isInline, isVoid } = editor;
@@ -37,7 +37,7 @@ export const MentionElement = ({ attributes, children, element }) => (
       fontSize: '0.9em',
     }}
   >
-    @{element.character}
+    @{element.user}
     {children}
   </span>
 );
@@ -52,8 +52,8 @@ export const MentionButton = () => {
   const editor = useSlate();
   const [isOpen, setOpen] = useState(false);
 
-  const insertMention = character => {
-    const mention = { type: 'mention', character, children: [{ text: '' }] };
+  const insertMention = user => {
+    const mention = { type: 'mention', user, children: [{ text: '' }] };
     Transforms.insertNodes(editor, mention);
     Transforms.move(editor);
   };

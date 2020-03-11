@@ -13,7 +13,7 @@ const ELEMENT_TAGS = {
   UL: () => ({ type: 'bulleted-list' }),
   LINK: el => ({ type: 'link', url: el.getAttribute('href') }),
   IMG: el => ({ type: 'image', url: el.getAttribute('src') }),
-  MENTION: el => ({ type: 'mention', users: el.getAttribute('user') }),
+  MENTION: el => ({ type: 'mention', user: el.getAttribute('user') }),
 };
 
 const TEXT_TAGS = {
@@ -46,6 +46,12 @@ const getNode = ({ element, children }) => {
       return `<li>${children}</li>`;
     case 'pre':
       return `<pre>${children}</pre>`;
+    case 'img':
+      return `<S3Image src="${escapeHtml(element.url)}">${children}</S3Image>`;
+    case 'mention':
+      return `<Mention user="${escapeHtml(
+        element.user,
+      )}">${children}</Mention>`;
     default:
       return children;
   }
