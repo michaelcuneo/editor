@@ -80,7 +80,7 @@ function HomePage({ value }) {
 }
 
 HomePage.propTypes = {
-  value: PropTypes.array,
+  value: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({

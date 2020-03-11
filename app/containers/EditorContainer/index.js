@@ -21,6 +21,7 @@ import { MarkButton, toggleMark } from './MarkButton';
 import { BlockButton } from './BlockButton';
 import { LinkButton, withLinks } from './LinkButton';
 import { ImageButton, withImages } from './ImageButton';
+import { MentionButton, withMentions } from './MentionButton';
 
 const EditorContainer = ({ initialValues, onChangeValue }) => {
   // Get the initial document deserialized string from intialValues
@@ -38,7 +39,10 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(
-    () => withImages(withLinks(withHistory(withReact(createEditor())))),
+    () =>
+      withMentions(
+        withImages(withLinks(withHistory(withReact(createEditor())))),
+      ),
     [],
   );
 
@@ -88,6 +92,7 @@ const EditorContainer = ({ initialValues, onChangeValue }) => {
           />
           <LinkButton editor={editor} />
           <ImageButton editor={editor} />
+          <MentionButton editor={editor} />
         </Toolbar>
         <Editable
           style={{

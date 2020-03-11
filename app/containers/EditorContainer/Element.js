@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ImageElement } from './ImageButton';
+import { MentionElement } from './MentionButton';
 
 const Element = props => {
   const { attributes, children, element } = props;
@@ -27,6 +28,8 @@ const Element = props => {
       );
     case 'image':
       return <ImageElement {...props} />;
+    case 'mention':
+      return <MentionElement {...props} />;
     default:
       return <p {...attributes}>{children}</p>;
   }

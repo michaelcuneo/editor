@@ -29,7 +29,7 @@ const ParsedContent = props => {
 };
 
 ParsedContent.propTypes = {
-  content: PropTypes.array,
+  content: PropTypes.string,
 };
 
 export default ParsedContent;

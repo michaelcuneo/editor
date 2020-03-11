@@ -13,6 +13,7 @@ const ELEMENT_TAGS = {
   UL: () => ({ type: 'bulleted-list' }),
   LINK: el => ({ type: 'link', url: el.getAttribute('href') }),
   IMG: el => ({ type: 'image', url: el.getAttribute('src') }),
+  MENTION: el => ({ type: 'mention', users: el.getAttribute('user') }),
 };
 
 const TEXT_TAGS = {
@@ -22,7 +23,7 @@ const TEXT_TAGS = {
   I: () => ({ italic: true }),
   S: () => ({ strikethrough: true }),
   STRONG: () => ({ bold: true }),
-  U: () => ({ underline: true }),
+  U: () => ({ underlined: true }),
 };
 
 const getNode = ({ element, children }) => {
