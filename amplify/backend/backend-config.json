@@ -5,15 +5,29 @@
       "providerPlugin": "awscloudformation"
     }
   },
+  "api": {
+    "editor": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "authenticationType": "AWS_IAM"
+          }
+        }
+      }
+    }
+  },
   "auth": {
-    "sleditor": {
+    "editorc2f258a5": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": []
     }
   },
   "storage": {
-    "sleditorstorage": {
+    "editorstorage": {
       "service": "S3",
       "providerPlugin": "awscloudformation"
     }

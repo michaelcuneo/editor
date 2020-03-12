@@ -10,3 +10,4 @@
  */
 
 export const CHANGE_VALUE = 'boilerplate/App/CHANGE_VALUE';
+export const VERSION = 'v0.2.0';

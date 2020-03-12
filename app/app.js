@@ -20,6 +20,9 @@ import 'sanitize.css/sanitize.css';
 // Import root app
 import App from 'containers/App';
 
+// Auth Management
+import AuthManager from 'containers/AuthManager';
+
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
@@ -40,8 +43,6 @@ import 'primeicons/primeicons.css';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
-window.LOG_LEVEL = 'DEBUG';
-
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
 const openSansObserver = new FontFaceObserver('Open Sans', {});
@@ -56,12 +57,20 @@ const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
+let runtime = null;
+
+if (process.env.NODE_ENV === 'production') {
+  runtime = require('offline-plugin/runtime'); // eslint-disable-line global-require
+}
+
 const render = messages => {
   ReactDOM.render(
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-          <App />
+          <AuthManager>
+            <App runtime={runtime} />
+          </AuthManager>
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,

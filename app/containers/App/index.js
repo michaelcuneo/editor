@@ -21,7 +21,7 @@ const AppWrapper = styled.div`
   position: relative;
   max-width: 100vw;
   min-height: 100vh;
-  height: 100vh;
+  height: 100%;
   background: #fbfbf8;
   display: flex;
   flex-direction: column;

@@ -1,0 +1,14 @@
+type Subscription {
+  addedPost: Post
+  @aws_subscribe(mutations: ["createPost"])
+  editedPost: Post
+  @aws_subscribe(mutations: ["updatePost"])
+  deletePost: Post
+  @aws_subscribe(mutations: ["deletePost"])
+}
+
+type Post @model {
+  id: ID!
+  date: AWSDateTime!
+  data: String!
+}

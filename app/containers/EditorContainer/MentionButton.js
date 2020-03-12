@@ -7,7 +7,7 @@ import Popover from 'react-popover';
 import { ListBox } from 'primereact/listbox';
 import { Button, Icon } from './Components';
 
-import { users } from './Users';
+import { users } from './users';
 
 export const withMentions = editor => {
   const { isInline, isVoid } = editor;
